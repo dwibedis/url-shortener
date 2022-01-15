@@ -3,9 +3,11 @@ version: "3"
 networks:
   net:
 
-  redis-replication:
-    driver: bridge
-
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
 
 services:
   url-shortener:
@@ -22,14 +24,12 @@ services:
 
   redis:
     image: redis:latest
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
     container_name: redis_master
     ports:
       - "6379:6379"
     networks:
-      - redis-replication
+      node_net:
+        ipv4_address: 172.28.1.4
 
 #  redis-slave:
 #    image: redis:5.0.0
