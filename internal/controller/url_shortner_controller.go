@@ -39,7 +39,7 @@ func GenerateRedirectUrl(c *gin.Context) {
 func RedisPing(c *gin.Context) {
 	log.Println("redis ping controller invoked!!")
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "docker.for.mac.localhost:6379",
+		Addr:     "redis:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
