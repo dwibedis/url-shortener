@@ -38,10 +38,10 @@ func GenerateRedirectUrl(c *gin.Context) {
 
 func RedisPing(c *gin.Context) {
 	log.Println("redis ping controller invoked!!")
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "172.28.1.4:6379",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+	clusters := []string{"url_shortner_redis:7000", "url_shortner_redis:7001",
+		"url_shortner_redis:7002", "url_shortner_redis:7003", "url_shortner_redis:7004"}
+	rdb := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs:              clusters,
 	})
 	err:= rdb.Ping(c).Err()
 	if (err != nil) {

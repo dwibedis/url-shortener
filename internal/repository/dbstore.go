@@ -11,7 +11,7 @@ import (
 func Store(c *gin.Context, db UrlDb) bool {
 	db.addedOn = time.Now()
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "172.28.1.4:6379",
+		Addr:     "0.0.0.0:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
@@ -27,7 +27,7 @@ func Store(c *gin.Context, db UrlDb) bool {
 
 func Get(id string) string {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "172.28.1.4:6379",
+		Addr:     "0.0.0.0:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})

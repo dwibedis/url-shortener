@@ -3,11 +3,6 @@ version: "3"
 networks:
   net:
 
-  node_net:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.28.0.0/16
 
 services:
   url-shortener:
@@ -21,15 +16,23 @@ services:
     ports:
       - '8080:8080'
     container_name: url_shortener
+    depends_on:
+      - redis
 
   redis:
-    image: redis:latest
-    container_name: redis_master
+    image: grokzen/redis-cluster
+    container_name: url_shortner_redis
+    volumes:
+      - ./data/redis:/var/lib/redis
+    environment:
+#      - REDIS_CLUSTER_IP=0.0.0.0
+      - CLUSTER_ONLY=true
+#      - IP=0.0.0.0
+      - NETWORK_MODE=host
     ports:
-      - "6379:6379"
+      - "7000-7004:7000-7004"
     networks:
-      node_net:
-        ipv4_address: 172.28.1.4
+      - net
 
 #  redis-slave:
 #    image: redis:5.0.0
