@@ -45,6 +45,7 @@ func RedisPing(c *gin.Context) {
 	})
 	err:= rdb.Ping(c).Err()
 	if (err != nil) {
+		log.Println("error occurred, err:" , err.Error())
 		c.IndentedJSON(http.StatusGone, err)
 	}
 	c.IndentedJSON(http.StatusAccepted, rdb.Ping(c).Val())
