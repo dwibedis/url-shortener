@@ -43,5 +43,9 @@ func RedisPing(c *gin.Context) {
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
-	c.IndentedJSON(http.StatusAccepted,rdb.Ping(c).Val())
+	err:= rdb.Ping(c).Err()
+	if (err != nil) {
+		c.IndentedJSON(http.StatusGone, err)
+	}
+	c.IndentedJSON(http.StatusAccepted, rdb.Ping(c).Val())
 }
