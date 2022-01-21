@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"dwibedis/url-shortener/internal/controller"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 func main() {
 	router := gin.Default()
 	log.Println("invoking main!!")
+	router.Use(JSONAppErrorReporter)
 	router.GET("/get-redirect-url", controller.GetRedirectUrlFromShortenedUrl)
 	router.GET("/generate-redirect-url", controller.GenerateRedirectUrl)
 	log.Println("invoking redis ping!!")
@@ -46,4 +48,8 @@ func main() {
 	log.Println("Server exiting")
 }
 
-
+func JSONAppErrorReporter(c *gin.Context) {
+	c.Error(gin.Error{
+		Err: errors.New("under maintainance"),
+	})
+}
