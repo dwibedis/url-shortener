@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-
 func GetRedirectUrlFromShortenedUrl(c *gin.Context) {
 	shortenedUrl, status:= c.GetQuery("url")
 
