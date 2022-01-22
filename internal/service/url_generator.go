@@ -6,13 +6,12 @@ import (
 	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"log"
-	"strings"
 )
 
 func GenerateAndStoreUrl(c *gin.Context, url string) repository.Url {
 	log.Println("Generating shortened url for url: " + url)
 	hash := md5.Sum([]byte(url))
-	shortenedUrl := "url-shortened/" + hex.EncodeToString(hash[:])
+	shortenedUrl := "url-shortner/r/" + hex.EncodeToString(hash[:])
 	log.Print("url: " + url +  ", shortened: " + shortenedUrl)
 	status := repository.Store(c, repository.UrlDb{
 		ID: hex.EncodeToString(hash[:]),
@@ -26,8 +25,7 @@ func GenerateAndStoreUrl(c *gin.Context, url string) repository.Url {
 	}
 }
 
-func GetRedirectUrlFromShortUrl(shortUrl string) repository.Url {
-	shortUrlId:= strings.Split(shortUrl, "/")[1]
+func GetRedirectUrlFromShortUrl(shortUrlId string) repository.Url {
 	parentUrl:= repository.Get(shortUrlId)
 	return repository.Url{
 		URL: parentUrl,

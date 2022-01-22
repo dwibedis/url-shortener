@@ -10,15 +10,20 @@ import (
 )
 
 func GetRedirectUrlFromShortenedUrl(c *gin.Context) {
-	shortenedUrl, status:= c.GetQuery("url")
+	shortenedUrlId := c.Param("urlId")
 
-	if len(shortenedUrl) == 0 || !status {
+	if len(shortenedUrlId) == 0 {
 		log.Println("Empty short URL in request, not status")
 		c.IndentedJSON(http.StatusUnprocessableEntity, repository.Url{})
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, service.GetRedirectUrlFromShortUrl(shortenedUrl))
+	//c.IndentedJSON(http.StatusOK, service.GetRedirectUrlFromShortUrl(shortenedUrlId).URL)
+	originalUrl := service.GetRedirectUrlFromShortUrl(shortenedUrlId).URL
+	if originalUrl[0:4] != "http" {
+		originalUrl = "https://" + originalUrl
+	}
+	c.Redirect(http.StatusFound, originalUrl)
 }
 
 func GenerateRedirectUrl(c *gin.Context) {
@@ -31,7 +36,6 @@ func GenerateRedirectUrl(c *gin.Context) {
 	}
 
 	log.Println("Received request for url: " + url)
-	// Add the new album to the slice.
 	c.IndentedJSON(http.StatusCreated, service.GenerateAndStoreUrl(c, url))
 }
 
