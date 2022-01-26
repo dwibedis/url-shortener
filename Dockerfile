@@ -13,6 +13,6 @@ COPY internal ./internal
 
 
 RUN go build -o ./app ./main.go
-EXPOSE 8080
+EXPOSE 80
 
-ENTRYPOINT ["./app"]
+ENTRYPOINT "./app" --port 80
