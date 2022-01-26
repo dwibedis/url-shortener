@@ -11,16 +11,13 @@ services:
       dockerfile: Dockerfile
     networks:
       - net
-#    expose:
-#      - 8080
-#    ports:
-#      - '8080:8080'
+    expose:
+      - 8080
+    ports:
+      - '8080:8080'
     container_name: url_shortener
     depends_on:
       - redis
-    environment:
-      - VIRTUAL_HOST=url-shortner
-#      - LETSENCRYPT_HOST=url-shortner.com
 
   redis:
     image: grokzen/redis-cluster
@@ -28,29 +25,22 @@ services:
     volumes:
       - ./data/redis:/var/lib/redis
     environment:
+#      - REDIS_CLUSTER_IP=0.0.0.0
       - CLUSTER_ONLY=true
+#      - IP=0.0.0.0
       - NETWORK_MODE=host
     ports:
       - "7000-7004:7000-7004"
     networks:
       - net
 
-  nginx-proxy:
-    restart: always
-    image: jwilder/nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "/etc/nginx/certs"
-
-#  letsencrypt-nginx-proxy-companion:
-#    restart: always
-#    image: jrcs/letsencrypt-nginx-proxy-companion
-#    volumes:
-#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-#    volumes_from:
-#      - "nginx-proxy"
+#  redis-slave:
+#    image: redis:5.0.0
+#    container_name: redis_slave
+#    ports:
+#      - "6380:6379"
+#    command: redis-server --slaveof master 6379
+#    depends_on:
+#      - redis
+#    networks:
+#      - redis-replication
