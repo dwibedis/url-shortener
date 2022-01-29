@@ -39,7 +39,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - "url_shortener"
+      - "url-shortener"
     networks:
       - net
 
