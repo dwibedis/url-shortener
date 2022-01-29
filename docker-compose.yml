@@ -34,6 +34,13 @@ services:
     networks:
       - net
 
+  nginx:
+    build: "./nginx"
+    ports:
+      - "80:80"
+    depends_on:
+      - "url_shortener"
+
 #  redis-slave:
 #    image: redis:5.0.0
 #    container_name: redis_slave
