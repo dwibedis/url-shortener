@@ -11,7 +11,7 @@ import (
 func GenerateAndStoreUrl(c *gin.Context, url string) repository.Url {
 	log.Println("Generating shortened url for url: " + url)
 	hash := md5.Sum([]byte(url))
-	shortenedUrl := "url-shortner.com:8080/r/" + hex.EncodeToString(hash[:])
+	shortenedUrl := "url-shortner.com/r/" + hex.EncodeToString(hash[:])
 	log.Print("url: " + url +  ", shortened: " + shortenedUrl)
 	status := repository.Store(c, repository.UrlDb{
 		ID: hex.EncodeToString(hash[:]),
